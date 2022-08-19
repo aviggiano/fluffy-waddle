@@ -1,0 +1,14 @@
+{
+  "name": "fluffy-waddle",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "repository": "git@github.com:aviggiano/fluffy-waddle.git",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.7"
+  }
+}
