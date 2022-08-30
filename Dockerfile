@@ -32,6 +32,7 @@ RUN add-apt-repository -y ppa:ethereum/ethereum && \
 && rm -rf /var/lib/apt/lists/*
 
 RUN curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash - && sudo apt-get install -y --no-install-recommends nodejs && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN npm install --global yarn
 
 ###########
 # echidna #
