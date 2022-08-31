@@ -2,14 +2,13 @@ import dotenv from "dotenv";
 dotenv.config();
 // import express from "express";
 
-import { downloadSourceCode, Explorer } from "./explorer";
-import {
-  slither as runSlither,
-  findSolidityVersion,
-  selectSolidityVersion,
-} from "./tools";
+import { downloadSourceCode } from "./explorer";
+import { slither as runSlither } from "./tools/slither";
+import { findSolidityVersion, selectSolidityVersion } from "./tools/solc";
+import database, { IReport } from "./database";
 
 async function main(): Promise<void> {
+  await database.connect();
   const argv = require("minimist")(process.argv.slice(2), {
     string: ["contract"],
   });
@@ -19,11 +18,17 @@ async function main(): Promise<void> {
     await downloadSourceCode(explorer, contract, `/tmp/${contract}`);
   }
   if (slither) {
-    // const version = await findSolidityVersion(`/tmp/${contract}`);
-    // await selectSolidityVersion(version);
-    const report = await runSlither(`/tmp/${contract}`);
-    await saveReport(contract);
+    const version = await findSolidityVersion(`/tmp/${contract}`);
+    await selectSolidityVersion(version);
+    const details = await runSlither(`/tmp/${contract}`);
+    await database.Report.create<IReport>({
+      contract,
+      explorer,
+      details,
+      tool: "slither",
+    });
   }
+  console.log("Done");
 }
 
 // const PORT = process.env.PORT || 3000;
