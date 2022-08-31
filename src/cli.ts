@@ -19,7 +19,6 @@
 //   }
 //   if (slither) {
 //     const md5 = await md5sum(`/tmp/${contract}`);
-//     console.log({ md5 });
 //     const report = await database.Report.findOne({ contract, explorer, md5 });
 //     if (!report) {
 //       const version = await findSolidityVersion(`/tmp/${contract}`);
@@ -34,6 +33,5 @@
 //       });
 //     }
 //   }
-//   console.log("Done");
 //   process.exit(0);
 // }

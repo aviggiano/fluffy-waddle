@@ -22,7 +22,7 @@ async function main(): Promise<void> {
 
   await database.connect();
   const contractsVerified = await listContractsVerified(explorer, 1);
-  console.log(contractsVerified);
+  log.debug(contractsVerified);
   for (const contractVerified of contractsVerified) {
     log.debug(contractVerified);
     const contract: IContract = {
@@ -53,7 +53,10 @@ async function main(): Promise<void> {
     await downloadSourceCode(explorer, address, `/tmp/${address}`);
     const md5 = await md5sum(`/tmp/${address}`);
     log.debug({ md5 });
-    const report = await database.Report.findOne({ address, explorer, md5 });
+    const report = await database.Report.findOne({
+      contract: contractDocument._id,
+      md5,
+    });
     if (!report) {
       const version = await findSolidityVersion(`/tmp/${address}`);
       await selectSolidityVersion(version);
@@ -73,17 +76,17 @@ const PORT = process.env.PORT || 3000;
 express()
   .get("/", (_req: any, res: any) => res.send({ success: true }))
   .listen(PORT, async () => {
-    console.log(`Listening to port ${PORT}`);
+    log.info(`Listening to port ${PORT}`);
 
     (function loop(): unknown {
       return Promise.resolve()
         .then(async () => {
           await main();
         })
-        .catch((e) => console.error(e))
+        .catch((e) => log.error(e))
         .then(async () => {
           const timeout = 5 * 60e3;
-          console.log(`Waiting ${timeout / 1e3} seconds`);
+          log.info(`Waiting ${timeout / 1e3} seconds`);
           await new Promise((resolve) => setTimeout(resolve, timeout));
           loop();
         });
