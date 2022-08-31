@@ -1,10 +1,8 @@
 import * as mongoose from "mongoose";
-import { Explorer } from "../tools/explorer";
 import { Tool } from "../tools";
 
 export interface IReport {
-  contract: string;
-  explorer: Explorer;
+  contract: mongoose.Types.ObjectId;
   tool: Tool;
   details: string;
   md5: string;
@@ -16,12 +14,8 @@ export interface IReport {
 const schema = new mongoose.Schema<IReport>(
   {
     contract: {
-      type: String,
-      required: true,
-    },
-    explorer: {
-      type: String,
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Contract",
     },
     tool: {
       type: String,
