@@ -7,6 +7,7 @@ export interface IReport {
   explorer: Explorer;
   tool: Tool;
   details: string;
+  md5: string;
   deleted?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
@@ -27,6 +28,10 @@ const schema = new mongoose.Schema<IReport>(
       required: true,
     },
     details: {
+      type: String,
+      required: true,
+    },
+    md5: {
       type: String,
       required: true,
     },

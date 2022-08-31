@@ -8,7 +8,7 @@ export default async function (cmd: string): Promise<string> {
       if (error) {
         reject(error);
       } else {
-        resolve(stdout.replace("\r\n", ""));
+        resolve(stdout.replace("\r", "").replace("\n", ""));
       }
     });
   });
