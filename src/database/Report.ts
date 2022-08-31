@@ -1,5 +1,5 @@
 import * as mongoose from "mongoose";
-import { Explorer } from "../explorer";
+import { Explorer } from "../tools/explorer";
 import { Tool } from "../tools";
 
 export interface IReport {
