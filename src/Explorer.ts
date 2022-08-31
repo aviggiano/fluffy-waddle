@@ -1,6 +1,7 @@
 import axios from "axios";
+import cmd from "./cmd";
 
-export type Network = "etherscan" | "bscscan" | "polygonscan";
+export type Explorer = "etherscan" | "bscscan" | "polygonscan";
 
 export enum explorerUrls {
   etherscan = "https://api.etherscan.io/api",
@@ -19,14 +20,24 @@ export interface ApiResponse {
   ];
 }
 
-export async function getSourceCode(): Promise<string> {
-  const network = process.env.NETWORK as Network;
-  const contractAddress = process.env.CONTRACT_ADDRESS as string;
-  const apiKey = process.env.API_KEY as string;
+export async function downloadSourceCode(
+  explorer: string,
+  contractAddress: string,
+  outDir = "out"
+): Promise<string> {
+  return cmd(
+    `npx ethereum-sources-downloader ${explorer} ${contractAddress} ${outDir}`
+  );
+}
 
-  console.log({ network, contractAddress, apiKey });
+export async function getSourceCode(
+  explorer: Explorer,
+  contractAddress: string,
+  apiKey: string
+): Promise<string> {
+  console.log({ network: explorer, contractAddress, apiKey });
 
-  const url = `${explorerUrls[network]}?module=contract&action=getsourcecode&address=${contractAddress}&apikey=${apiKey}`;
+  const url = `${explorerUrls[explorer]}?module=contract&action=getsourcecode&address=${contractAddress}&apikey=${apiKey}`;
   console.log({ url });
 
   const {
