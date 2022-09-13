@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Report, { IReport } from "./Report";
 import Contract, { IContract } from "./Contract";
+import Blockchain, { IBlockchain } from "./Blockchain";
 import config from "../config";
 import { Logger } from "tslog";
 
@@ -11,5 +12,5 @@ async function connect(): Promise<void> {
   await mongoose.connect(config.mongodb.uri);
 }
 
-export { IReport, IContract };
-export default { Report, Contract, connect };
+export { IReport, IContract, IBlockchain };
+export default { Report, Contract, Blockchain, connect };

@@ -1,4 +1,5 @@
 import * as mongoose from "mongoose";
+import MongooseDelete from "mongoose-delete";
 
 export interface IContract {
   address: string;
@@ -57,9 +58,6 @@ const schema = new mongoose.Schema<IContract>(
       type: String,
     },
 
-    deleted: {
-      type: Boolean,
-    },
     createdAt: {
       type: Date,
     },
@@ -69,6 +67,7 @@ const schema = new mongoose.Schema<IContract>(
   },
   { timestamps: true }
 );
+schema.plugin(MongooseDelete, { deletedAt: true });
 
 const Contract = mongoose.model<IContract>("Contract", schema);
 

@@ -1,4 +1,5 @@
 import * as mongoose from "mongoose";
+import MongooseDelete from "mongoose-delete";
 import { Explorer } from "../tools/explorer";
 
 export interface IBlockchain {
@@ -6,7 +7,6 @@ export interface IBlockchain {
   name: string;
   explorer: Explorer;
 
-  deleted?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -17,18 +17,15 @@ const schema = new mongoose.Schema<IBlockchain>(
       type: String,
       required: true,
     },
-    explorer: {
-      type: String,
-      required: true,
-    },
     name: {
       type: String,
       required: true,
     },
-
-    deleted: {
-      type: Boolean,
+    explorer: {
+      type: String,
+      required: true,
     },
+
     createdAt: {
       type: Date,
     },
@@ -38,6 +35,7 @@ const schema = new mongoose.Schema<IBlockchain>(
   },
   { timestamps: true }
 );
+schema.plugin(MongooseDelete, { deletedAt: true });
 
 const Blockchain = mongoose.model<IBlockchain>("Blockchain", schema);
 

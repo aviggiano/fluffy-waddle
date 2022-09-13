@@ -1,4 +1,5 @@
 import * as mongoose from "mongoose";
+import MongooseDelete from "mongoose-delete";
 import { Tool } from "../tools";
 
 export interface IReport {
@@ -6,7 +7,6 @@ export interface IReport {
   tool: Tool;
   details: string;
   md5: string;
-  deleted?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -29,9 +29,6 @@ const schema = new mongoose.Schema<IReport>(
       type: String,
       required: true,
     },
-    deleted: {
-      type: Boolean,
-    },
     createdAt: {
       type: Date,
     },
@@ -41,6 +38,7 @@ const schema = new mongoose.Schema<IReport>(
   },
   { timestamps: true }
 );
+schema.plugin(MongooseDelete, { deletedAt: true });
 
 const Report = mongoose.model<IReport>("Report", schema);
 
