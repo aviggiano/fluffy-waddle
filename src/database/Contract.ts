@@ -1,9 +1,8 @@
 import * as mongoose from "mongoose";
-import { Explorer } from "../tools/explorer";
 
 export interface IContract {
   address: string;
-  explorer: Explorer;
+  blockchain: mongoose.Types.ObjectId;
 
   name?: string;
   compiler?: string;
@@ -26,9 +25,9 @@ const schema = new mongoose.Schema<IContract>(
       type: String,
       required: true,
     },
-    explorer: {
-      type: String,
-      required: true,
+    blockchain: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Blockchain",
     },
     name: {
       type: String,
