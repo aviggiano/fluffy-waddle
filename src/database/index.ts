@@ -8,15 +8,15 @@ import { Logger } from "tslog";
 const log = new Logger();
 
 async function connect(): Promise<void> {
-  log.info("Connecting to MongoDB...");
   if (mongoose.connection.readyState !== ConnectionStates.connected) {
+    log.info("Connecting to MongoDB...");
     await mongoose.connect(config.mongodb.uri);
   }
 }
 
 async function disconnect(): Promise<void> {
-  log.info("Disconnecting from MongoDB...");
   if (mongoose.connection.readyState === ConnectionStates.connected) {
+    log.info("Disconnecting from MongoDB...");
     await mongoose.connection.close();
   }
 }

@@ -5,8 +5,7 @@
   "repository": "git@github.com:aviggiano/fluffy-waddle.git",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
-    "start": "serverless offline"
+    "build": "tsc"
   },
   "dependencies": {
     "@middy/core": "^2.5.3",

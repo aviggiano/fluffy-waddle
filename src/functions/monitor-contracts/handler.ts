@@ -36,33 +36,30 @@ export async function main() {
     blockchains.map(async (blockchain) => {
       const explorer = blockchain.explorer;
       const pages = 20;
-      return Promise.all(
-        new Array(pages).fill(undefined).map(async (_, i) => {
-          const page = i + 1;
-          const contractsVerified = await listContractsVerified(explorer, page);
-          log.debug(
-            `found ${contractsVerified.length} contracts on page ${page} of ${explorer}`
-          );
-          await Promise.all(
-            contractsVerified.map(async (contractVerified) => {
-              const contract = getContract(contractVerified, blockchain);
-              const { address } = contract;
+      for (let page = 1; page <= pages; page++) {
+        const contractsVerified = await listContractsVerified(explorer, page);
+        log.debug(
+          `found ${contractsVerified.length} contracts on page ${page} of ${explorer}`
+        );
+        await Promise.all(
+          contractsVerified.map(async (contractVerified) => {
+            const contract = getContract(contractVerified, blockchain);
+            const { address } = contract;
 
-              log.debug(
-                `updating contract ${address} from ${blockchain.explorer}`
-              );
-              await database.Contract.findOneAndUpdate(
-                { address, blockchain },
-                contract,
-                {
-                  new: true,
-                  upsert: true,
-                }
-              ).exec();
-            })
-          );
-        })
-      );
+            log.debug(
+              `updating contract ${address} from ${blockchain.explorer}`
+            );
+            await database.Contract.findOneAndUpdate(
+              { address, blockchain },
+              contract,
+              {
+                new: true,
+                upsert: true,
+              }
+            ).exec();
+          })
+        );
+      }
     })
   );
   log.info("monitor-contracts end");
