@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import database, { IBlockchain } from ".";
+import database, { Blockchain } from ".";
 
 import { Logger } from "tslog";
 
@@ -9,7 +9,7 @@ const log = new Logger();
 async function seed(): Promise<void> {
   log.info("seed start");
   await database.connect();
-  const blockchains: IBlockchain[] = [
+  const blockchains: Blockchain[] = [
     {
       caip: "eip155:1",
       name: "Ethereum Mainnet",

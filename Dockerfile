@@ -8,5 +8,5 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY . .
-RUN yarn install
-CMD ["ts-node", "src/main.ts"]
+RUN yarn install && yarn build
+CMD ["node", "dist/docker/main.ts"]

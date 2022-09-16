@@ -2,16 +2,17 @@ import * as mongoose from "mongoose";
 import MongooseDelete from "mongoose-delete";
 import { Tool } from "../tools";
 
-export interface IReport {
+export interface Report {
   contract: mongoose.Types.ObjectId;
   tool: Tool;
-  details: string;
   md5: string;
+  details: string;
+  notes?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-const schema = new mongoose.Schema<IReport>(
+const schema = new mongoose.Schema<Report>(
   {
     contract: {
       type: mongoose.Schema.Types.ObjectId,
@@ -21,13 +22,16 @@ const schema = new mongoose.Schema<IReport>(
       type: String,
       required: true,
     },
+    md5: {
+      type: String,
+      required: true,
+    },
     details: {
       type: String,
       required: true,
     },
-    md5: {
+    notes: {
       type: String,
-      required: true,
     },
     createdAt: {
       type: Date,
@@ -40,6 +44,6 @@ const schema = new mongoose.Schema<IReport>(
 );
 schema.plugin(MongooseDelete, { deletedAt: true });
 
-const Report = mongoose.model<IReport>("Report", schema);
+const ReportModel = mongoose.model<Report>("Report", schema);
 
-export default Report;
+export default ReportModel;

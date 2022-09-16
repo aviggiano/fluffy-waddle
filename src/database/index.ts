@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-import Report, { IReport } from "./Report";
-import Contract, { IContract } from "./Contract";
-import Blockchain, { IBlockchain } from "./Blockchain";
+import mongoose, { ConnectionStates } from "mongoose";
+import ReportModel, { Report } from "./Report";
+import ContractModel, { Contract } from "./Contract";
+import BlockchainModel, { Blockchain } from "./Blockchain";
 import config from "../config";
 import { Logger } from "tslog";
 
@@ -9,8 +9,23 @@ const log = new Logger();
 
 async function connect(): Promise<void> {
   log.info("Connecting to MongoDB...");
-  await mongoose.connect(config.mongodb.uri);
+  if (mongoose.connection.readyState !== ConnectionStates.connected) {
+    await mongoose.connect(config.mongodb.uri);
+  }
 }
 
-export { IReport, IContract, IBlockchain };
-export default { Report, Contract, Blockchain, connect };
+async function disconnect(): Promise<void> {
+  log.info("Disconnecting from MongoDB...");
+  if (mongoose.connection.readyState === ConnectionStates.connected) {
+    await mongoose.connection.close();
+  }
+}
+
+export { Report, Contract, Blockchain };
+export default {
+  Report: ReportModel,
+  Contract: ContractModel,
+  Blockchain: BlockchainModel,
+  connect,
+  disconnect,
+};

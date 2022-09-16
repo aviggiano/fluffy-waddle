@@ -2,7 +2,7 @@ import * as mongoose from "mongoose";
 import MongooseDelete from "mongoose-delete";
 import { Explorer } from "../tools/explorer";
 
-export interface IBlockchain {
+export interface Blockchain {
   caip: string;
   name: string;
   explorer: Explorer;
@@ -11,7 +11,7 @@ export interface IBlockchain {
   updatedAt?: Date;
 }
 
-const schema = new mongoose.Schema<IBlockchain>(
+const schema = new mongoose.Schema<Blockchain>(
   {
     caip: {
       type: String,
@@ -37,6 +37,6 @@ const schema = new mongoose.Schema<IBlockchain>(
 );
 schema.plugin(MongooseDelete, { deletedAt: true });
 
-const Blockchain = mongoose.model<IBlockchain>("Blockchain", schema);
+const BlockchainModel = mongoose.model<Blockchain>("Blockchain", schema);
 
-export default Blockchain;
+export default BlockchainModel;

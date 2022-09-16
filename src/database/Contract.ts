@@ -1,7 +1,7 @@
 import * as mongoose from "mongoose";
 import MongooseDelete from "mongoose-delete";
 
-export interface IContract {
+export interface Contract {
   address: string;
   blockchain: mongoose.Types.ObjectId;
 
@@ -20,7 +20,7 @@ export interface IContract {
   updatedAt?: Date;
 }
 
-const schema = new mongoose.Schema<IContract>(
+const schema = new mongoose.Schema<Contract>(
   {
     address: {
       type: String,
@@ -69,6 +69,6 @@ const schema = new mongoose.Schema<IContract>(
 );
 schema.plugin(MongooseDelete, { deletedAt: true });
 
-const Contract = mongoose.model<IContract>("Contract", schema);
+const ContractModel = mongoose.model<Contract>("Contract", schema);
 
-export default Contract;
+export default ContractModel;

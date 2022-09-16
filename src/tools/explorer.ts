@@ -7,15 +7,17 @@ const log = new Logger();
 
 export type Explorer = "etherscan" | "bscscan" | "polygonscan";
 
-export interface ApiResponse {
-  status: string;
-  message: string;
-  result: [
-    {
-      SourceCode: string;
-      ContractName: string;
-    }
-  ];
+export interface ExplorerContractVerified {
+  Address: string;
+  "Contract Name": string;
+  Compiler: string;
+  Version: string;
+  Balance: string;
+  Txns: string;
+  Setting: string;
+  Verified: string;
+  Audited: string;
+  License: string;
 }
 
 export async function downloadSourceCode(
@@ -38,6 +40,17 @@ export async function getSourceCode(
   const url = `https://api.${explorer}.com/api?module=contract&action=getsourcecode&address=${contractAddress}&apikey=${apiKey}`;
   log.debug(url);
 
+  interface ApiResponse {
+    status: string;
+    message: string;
+    result: [
+      {
+        SourceCode: string;
+        ContractName: string;
+      }
+    ];
+  }
+
   const {
     data: {
       result: [{ SourceCode: code }],
@@ -49,43 +62,52 @@ export async function getSourceCode(
 
 export async function listContractsVerified(
   explorer: Explorer,
-  pages = 20
-): Promise<Record<string, string>[]> {
-  const results: Record<string, string>[] = [];
-  for (let page = 1; page <= pages; page++) {
-    const url = `https://${explorer}.com/contractsVerified/${page}`;
-    log.debug(url);
+  page: number
+): Promise<ExplorerContractVerified[]> {
+  const results: ExplorerContractVerified[] = [];
+  const url = `https://${explorer}.com/contractsVerified/${page}`;
+  log.debug(url);
 
-    const { data } = await axios.get(url);
-    const html = parse(data);
-    const table = html.querySelector("table");
+  const { data } = await axios.get(url);
+  const html = parse(data);
+  const table = html.querySelector("table");
 
-    const header = table!.querySelectorAll("thead > tr > th");
-    const headerStrings = Array.from(header).map((e) => e.innerText.trim());
-    const rows = table!.querySelectorAll("tbody > tr");
-    const rowsObjects = rows.map((row) =>
-      Array.from(row.querySelectorAll("td"))
-        .map((td, index) => {
-          const column = headerStrings[index];
-          let value = td.innerHTML.trim();
-          if (column === "Address") {
+  if (!table) {
+    console.log({ url }, html.innerHTML);
+    throw new Error("err");
+  }
+  const header = table!.querySelectorAll("thead > tr > th");
+  const headerStrings = Array.from(header).map((e) => e.innerText.trim());
+  const rows = table!.querySelectorAll("tbody > tr");
+  const rowsObjects = rows.map((row) =>
+    Array.from(row.querySelectorAll("td"))
+      .map((td, index) => {
+        const column = headerStrings[index];
+        let value = td.innerHTML.trim();
+        switch (true) {
+          case column === "Address":
             value = parse(value).innerText.trim().toLowerCase();
-          } else if (column === "Version") {
+            break;
+          case column === "Version":
             value = parse(value).innerText.trim();
-          } else if (column === "Setting") {
+            break;
+          case column === "Balance":
+            value = parse(value).innerText.trim();
+            break;
+          case column === "Setting":
             value = Array.from(parse(value).querySelectorAll("span"))
               .map((span) => span.attrs.title)
               .sort()
               .join("; ");
-          }
-          return {
-            [column]: value,
-          };
-        })
-        .reduce((a, b) => ({ ...a, ...b }), {})
-    );
+            break;
+        }
+        return {
+          [column]: value,
+        };
+      })
+      .reduce((a, b) => ({ ...a, ...b }), {} as ExplorerContractVerified)
+  );
 
-    results.push(...rowsObjects);
-  }
+  results.push(...rowsObjects);
   return results;
 }
