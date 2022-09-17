@@ -5,7 +5,9 @@
   "repository": "git@github.com:aviggiano/fluffy-waddle.git",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "frontend:build": "cd frontend && next build",
+    "frontend:dev": "cd frontend && next dev",
+    "frontend:lint": "cd frontend && next lint",
     "get-secrets": "aws secretsmanager get-secret-value --region us-east-1 --secret-id .env | jq --raw-output '.SecretString' > .env",
     "put-secrets": "aws secretsmanager put-secret-value --region us-east-1 --secret-id .env --secret-string file://.env"
   },
@@ -20,6 +22,8 @@
     "mongoose": "^6.5.4",
     "mongoose-delete": "^0.5.4",
     "node-html-parser": "^5.4.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "tslog": "^3.3.4"
   },
   "devDependencies": {
@@ -36,7 +40,11 @@
     "serverless-esbuild": "^1.23.3",
     "ts-node": "^10.4.0",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^4.1.3"
+    "@types/react": "18.0.20",
+    "eslint": "8.23.1",
+    "eslint-config-next": "12.3.0",
+    "typescript": "4.8.3",
+    "next": "12.3.0"
   },
   "engines": {
     "node": "^16.14.2",
