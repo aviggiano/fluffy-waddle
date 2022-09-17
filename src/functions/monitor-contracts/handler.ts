@@ -7,6 +7,8 @@ import parseDate from "date-fns/parse";
 import { Logger } from "tslog";
 import mongoose from "mongoose";
 
+const log = new Logger();
+
 function getContract(
   contractVerified: ExplorerContractVerified,
   blockchain: { _id: mongoose.Types.ObjectId }
@@ -27,7 +29,6 @@ function getContract(
 }
 
 export async function main() {
-  const log = new Logger();
   log.info("monitor-contracts start");
   await database.connect();
 
