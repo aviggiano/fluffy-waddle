@@ -1,6 +1,6 @@
 # fluffy-waddle
 
-Automatic smart contract threat detection
+Smart contract threat detection system
 
 ## Description
 
