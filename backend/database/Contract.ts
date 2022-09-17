@@ -15,7 +15,6 @@ export interface Contract {
   audited?: string;
   license?: string;
 
-  deleted?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }

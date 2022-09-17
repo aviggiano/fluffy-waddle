@@ -1,16 +1,14 @@
 import * as React from "react";
 import { Admin, Resource, ListGuesser } from "react-admin";
-import jsonServerProvider from "ra-data-json-server";
+import postgrestRestProvider from "@promitheus/ra-data-postgrest";
 
-const dataProvider = jsonServerProvider(
-  "https://jsonplaceholder.typicode.com/typicode/demo"
-);
+const dataProvider = postgrestRestProvider("/api/");
 
 const App = () => (
   <Admin dataProvider={dataProvider}>
-    <Resource name="blockchains" list={ListGuesser} />
-    <Resource name="contracts" list={ListGuesser} />
-    <Resource name="reports" list={ListGuesser} />
+    <Resource name="Blockchains" list={ListGuesser} />
+    <Resource name="Contracts" list={ListGuesser} />
+    <Resource name="Reports" list={ListGuesser} />
   </Admin>
 );
 

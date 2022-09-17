@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "frontend:build": "cd frontend && next build",
-    "frontend:dev": "cd frontend && next dev",
+    "frontend:dev": "cp .env frontend/.env.local && cd frontend && next dev",
     "frontend:lint": "cd frontend && next lint",
     "get-secrets": "aws secretsmanager get-secret-value --region us-east-1 --secret-id .env | jq --raw-output '.SecretString' > .env",
     "put-secrets": "aws secretsmanager put-secret-value --region us-east-1 --secret-id .env --secret-string file://.env"
@@ -14,6 +14,7 @@
   "dependencies": {
     "@middy/core": "^2.5.3",
     "@middy/http-json-body-parser": "^2.5.3",
+    "@promitheus/ra-data-postgrest": "^1.2.2",
     "axios": "^0.27.2",
     "date-fns": "^2.29.2",
     "dotenv": "^16.0.1",
