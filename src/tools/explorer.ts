@@ -68,7 +68,13 @@ export async function listContractsVerified(
   const url = `https://${explorer}.com/contractsVerified/${page}`;
   log.debug(url);
 
-  const { data } = await axios.get(url);
+  const { data } = await axios.get(url, {
+    headers: {
+      Accept: "application/json",
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:104.0) Gecko/20100101 Firefox/104.0",
+    },
+  });
   const html = parse(data);
   const table = html.querySelector("table");
 
