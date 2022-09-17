@@ -1,7 +1,10 @@
-# Awesome Project Build with TypeORM
+# fluffy-waddle
 
-Steps to run this project:
+Automatic smart contract threat detection
 
-1. Run `npm i` command
-2. Setup database settings inside `data-source.ts` file
-3. Run `npm start` command
+## Description
+
+This is still a work in progress.
+
+The idea is to crawl etherscan and other blockchain explorers and use both open source and custom tools to find potential vulnerabilities.
+Then, to send a private message to project owners and notify them of these issues.
