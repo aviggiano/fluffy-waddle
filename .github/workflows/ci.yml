@@ -8,13 +8,14 @@ on:
 jobs:
   deploy:
     name: deploy
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 14.x
+        node-version: 16.x
     - run: yarn
     - name: Deploy serverless
       uses: serverless/github-action@v3.1
