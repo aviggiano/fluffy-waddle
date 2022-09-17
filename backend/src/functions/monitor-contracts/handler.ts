@@ -2,24 +2,30 @@ import {
   ExplorerContractVerified,
   listContractsVerified,
 } from "../../tools/explorer";
-import database, { Contract } from "../../database";
+import database, {
+  Blockchain,
+  connect,
+  Contract,
+  disconnect,
+} from "../../database";
 import parseDate from "date-fns/parse";
 import { Logger } from "tslog";
-import mongoose from "mongoose";
 
 const log = new Logger();
 
 function getContract(
   contractVerified: ExplorerContractVerified,
-  blockchain: { _id: mongoose.Types.ObjectId }
-): Contract {
+  blockchain: Blockchain
+): Omit<Contract, "id" | "createdAt" | "updatedAt" | "blockchain"> & {
+  blockchainId: number;
+} {
   return {
-    blockchain: blockchain._id,
+    blockchainId: blockchain.id,
     address: contractVerified.Address,
     name: contractVerified["Contract Name"],
     compiler: contractVerified.Compiler,
     version: contractVerified.Version,
-    balance: Number(contractVerified.Balance.replace(/ .*/, "")),
+    balance: contractVerified.Balance.replace(/ .*/, ""),
     txns: Number(contractVerified.Txns),
     setting: contractVerified.Setting,
     verified: parseDate(contractVerified.Verified, "M/dd/yyyy", new Date()),
@@ -30,9 +36,11 @@ function getContract(
 
 export async function main() {
   log.info("monitor-contracts start");
-  await database.connect();
+  await connect();
+  await database.synchronize();
 
-  const blockchains = await database.Blockchain.find({}).exec();
+  const blockchains = await database.manager.find(Blockchain);
+
   await Promise.all(
     blockchains.map(async (blockchain) => {
       const explorer = blockchain.explorer;
@@ -50,19 +58,23 @@ export async function main() {
             log.debug(
               `updating contract ${address} from ${blockchain.explorer}`
             );
-            await database.Contract.findOneAndUpdate(
-              { address, blockchain },
-              contract,
-              {
-                new: true,
-                upsert: true,
-              }
-            ).exec();
+            await database
+              .createQueryBuilder()
+              .insert()
+              .into(Contract)
+              .values(contract)
+              .orUpdate(
+                Object.keys(contract).filter(
+                  (e) => !["address", "blockchainId"].includes(e)
+                ),
+                ["address", "blockchainId"]
+              )
+              .execute();
           })
         );
       }
     })
   );
   log.info("monitor-contracts end");
-  await database.disconnect();
+  await disconnect();
 }

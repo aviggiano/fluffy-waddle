@@ -5,9 +5,10 @@
   "repository": "git@github.com:aviggiano/fluffy-waddle.git",
   "license": "MIT",
   "scripts": {
+    "backend:local": "serverless invoke local",
     "frontend:build": "cd frontend && next build",
-    "frontend:dev": "cp .env frontend/.env.local && cd frontend && next dev",
-    "frontend:lint": "cd frontend && next lint",
+    "frontend:dev": "next dev",
+    "frontend:lint": "next lint",
     "get-secrets": "aws secretsmanager get-secret-value --region us-east-1 --secret-id .env | jq --raw-output '.SecretString' > .env",
     "put-secrets": "aws secretsmanager put-secret-value --region us-east-1 --secret-id .env --secret-string file://.env"
   },
@@ -20,19 +21,19 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "minimist": "^1.2.6",
-    "mongoose": "^6.5.4",
-    "mongoose-delete": "^0.5.4",
     "node-html-parser": "^5.4.2",
+    "pg": "^8.8.0",
+    "pg-native": "^3.0.1",
     "ra-data-json-server": "^4.3.3",
     "react": "18.2.0",
     "react-admin": "^4.3.3",
     "react-dom": "18.2.0",
-    "tslog": "^3.3.4"
+    "tslog": "^3.3.4",
+    "typeorm": "^0.3.9"
   },
   "devDependencies": {
     "@serverless/typescript": "^2.23.0",
     "@types/aws-lambda": "^8.10.71",
-    "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.13",
     "@types/mongoose-delete": "^0.5.9",
     "@types/node": "^18.7.7",

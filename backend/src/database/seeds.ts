@@ -1,6 +1,7 @@
+import "reflect-metadata";
 import dotenv from "dotenv";
 dotenv.config();
-import database, { Blockchain } from ".";
+import database, { Blockchain, connect, disconnect } from ".";
 
 import { Logger } from "tslog";
 
@@ -8,8 +9,9 @@ const log = new Logger();
 
 async function seed(): Promise<void> {
   log.info("seed start");
-  await database.connect();
-  const blockchains: Blockchain[] = [
+  await connect();
+  await database.synchronize();
+  const blockchains: Omit<Blockchain, "id" | "createdAt" | "updatedAt">[] = [
     {
       caip: "eip155:1",
       name: "Ethereum Mainnet",
@@ -26,9 +28,10 @@ async function seed(): Promise<void> {
       explorer: "bscscan",
     },
   ];
-  log.info("Blockchain.insertMany");
-  await database.Blockchain.insertMany(blockchains);
+  log.info(`create ${blockchains.length} blockchains`);
+  await database.manager.insert(Blockchain, blockchains);
   log.info("seed done");
+  await disconnect();
 }
 
 seed();
