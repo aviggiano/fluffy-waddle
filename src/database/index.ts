@@ -1,31 +1,26 @@
-import mongoose, { ConnectionStates } from "mongoose";
-import ReportModel, { Report } from "./Report";
-import ContractModel, { Contract } from "./Contract";
-import BlockchainModel, { Blockchain } from "./Blockchain";
-import config from "../config";
+import { AppDataSource } from "./data-source";
+
+import { Report } from "./entities/Report.entity";
+import { Contract } from "./entities/Contract.entity";
+import { Blockchain } from "./entities/Blockchain.entity";
 import { Logger } from "tslog";
 
 const log = new Logger();
 
-async function connect(): Promise<void> {
-  if (mongoose.connection.readyState !== ConnectionStates.connected) {
-    log.info("Connecting to MongoDB...");
-    await mongoose.connect(config.mongodb.uri);
+export async function connect(): Promise<void> {
+  if (!AppDataSource.isInitialized) {
+    log.info("Connecting to Postgres...");
+    await AppDataSource.initialize();
   }
 }
 
-async function disconnect(): Promise<void> {
-  if (mongoose.connection.readyState === ConnectionStates.connected) {
-    log.info("Disconnecting from MongoDB...");
-    await mongoose.connection.close();
+export async function disconnect(): Promise<void> {
+  if (AppDataSource.isInitialized) {
+    log.info("Disconnecting from Postgres...");
+    await AppDataSource.destroy();
   }
 }
 
 export { Report, Contract, Blockchain };
-export default {
-  Report: ReportModel,
-  Contract: ContractModel,
-  Blockchain: BlockchainModel,
-  connect,
-  disconnect,
-};
+
+export default AppDataSource;

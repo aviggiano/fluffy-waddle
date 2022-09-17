@@ -6,7 +6,7 @@ import monitorContracts from "@functions/monitor-contracts";
 const serverlessConfiguration: AWS = {
   service: "fluffy-waddle",
   frameworkVersion: "2",
-  plugins: ["serverless-esbuild", "serverless-dotenv-plugin"],
+  plugins: ["serverless-dotenv-plugin"],
   provider: {
     name: "aws",
     runtime: "nodejs14.x",
@@ -32,9 +32,6 @@ const serverlessConfiguration: AWS = {
       define: { "require.resolve": undefined },
       platform: "node",
       concurrency: 10,
-    },
-    ["serverless-offline"]: {
-      httpPort: 3000,
     },
   },
 };
