@@ -5,7 +5,9 @@
   "repository": "git@github.com:aviggiano/fluffy-waddle.git",
   "license": "MIT",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "get-secrets": "aws secretsmanager get-secret-value --region us-east-1 --secret-id .env | jq --raw-output '.SecretString' > .env",
+    "put-secrets": "aws secretsmanager put-secret-value --region us-east-1 --secret-id .env --secret-string file://.env"
   },
   "dependencies": {
     "@middy/core": "^2.5.3",

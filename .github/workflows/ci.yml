@@ -17,6 +17,8 @@ jobs:
       with:
         node-version: 16.x
     - run: yarn
+    - name: Get .env
+      run: yarn get-secrets
     - name: Deploy serverless
       uses: serverless/github-action@v3.1
       with:
