@@ -43,7 +43,7 @@ export default async function (): Promise<void> {
         return;
       }
 
-      const dir = `/tmp/lala/${contract.blockchain.caip}:${contract.address}`;
+      const dir = `/tmp/${contract.blockchain.caip}:${contract.address}`;
 
       await downloadSourceCode(
         contract.blockchain.explorer,
