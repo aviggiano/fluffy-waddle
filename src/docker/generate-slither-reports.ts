@@ -20,7 +20,7 @@ export default async function (): Promise<void> {
   await connect();
   await database.synchronize();
   const contractsLength = await database.manager.count(Contract);
-  const take = 20;
+  const take = 3;
   for (let skip = 0; skip <= contractsLength; skip += take) {
     const contracts = await database.manager.find(Contract, { skip, take });
     log.info(`found ${contracts.length} contracts`);
