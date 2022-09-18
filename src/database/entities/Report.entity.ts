@@ -18,7 +18,7 @@ export class Report {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Contract, (contract) => contract.id)
+  @ManyToOne(() => Contract, (contract) => contract.id, { eager: true })
   @JoinColumn()
   contract: Contract;
 

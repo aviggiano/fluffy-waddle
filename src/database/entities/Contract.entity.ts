@@ -18,7 +18,7 @@ export class Contract {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Blockchain, (blockchain) => blockchain.id)
+  @ManyToOne(() => Blockchain, (blockchain) => blockchain.id, { eager: true })
   @JoinColumn()
   blockchain: Blockchain;
 

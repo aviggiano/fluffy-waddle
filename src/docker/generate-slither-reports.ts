@@ -1,4 +1,4 @@
-import database, { Blockchain, connect, Contract, Report } from "../database";
+import database, { connect, Contract, Report } from "../database";
 import { Logger } from "tslog";
 import { downloadSourceCode } from "../tools/explorer";
 import md5sum from "../tools/md5";
@@ -19,7 +19,7 @@ export default async function (): Promise<void> {
     contracts.map(async (contract) => {
       const { address } = contract;
       await downloadSourceCode(
-        (contract.blockchain as unknown as Blockchain).explorer,
+        contract.blockchain.explorer,
         address,
         `/tmp/${address}`
       );
