@@ -18,7 +18,7 @@ const log = new Logger();
 export default async function (): Promise<void> {
   log.info("generate-slither-reports start");
   await connect();
-  const contracts = await database.manager.find(Contract, { take: 5 });
+  const contracts = await database.manager.find(Contract, { take: 100 });
   log.info(`found ${contracts.length} contracts`);
   const slitherContracts: {
     version: string;
@@ -26,7 +26,7 @@ export default async function (): Promise<void> {
     dir: string;
     contract: Contract;
   }[] = [];
-  const DOWNLOAD_CONCURRENCY = 100;
+  const DOWNLOAD_CONCURRENCY = 20;
   await PromisePool.withConcurrency(DOWNLOAD_CONCURRENCY)
     .for(contracts)
     .process(async (contract) => {
