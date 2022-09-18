@@ -14,6 +14,11 @@ export default {
     logging: Boolean(process.env.POSTGRES_LOGGING ?? false),
   },
   reports: {
-    maxAgeDays: 1,
+    maxAgeDays: 7,
+  },
+  explorer: {
+    bscscanApiKey: process.env.BSCSCAN_API_KEY!,
+    etherscanApiKey: process.env.ETHERSCAN_API_KEY!,
+    polygonscanApiKey: process.env.POLYGONSCAN_API_KEY!,
   },
 };
