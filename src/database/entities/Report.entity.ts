@@ -33,7 +33,7 @@ export class Report {
   md5: string;
   @Column()
   details: string;
-  @Column()
+  @Column({ nullable: true })
   notes?: string;
 
   @CreateDateColumn()

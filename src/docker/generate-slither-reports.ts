@@ -77,10 +77,12 @@ export default async function (): Promise<void> {
 
   log.info(`running slither on ${slitherContracts.length} contracts`);
   for (const { version, md5, dir, contract } of slitherContracts) {
-    await selectSolidityVersion(version);
-    const contractDir = await getContractDir(dir);
-    log.debug(`run slither on ${contract.blockchain.caip}:${contract.address}`);
     try {
+      await selectSolidityVersion(version);
+      const contractDir = await getContractDir(dir);
+      log.debug(
+        `run slither on ${contract.blockchain.caip}:${contract.address}`
+      );
       const details = await slither(contractDir);
       await database.manager.save(Report, {
         contractId: contract.id,
