@@ -18,6 +18,7 @@ const log = new Logger();
 export default async function (): Promise<void> {
   log.info("generate-slither-reports start");
   await connect();
+  await database.synchronize();
   const contractsLength = await database.manager.count(Contract);
   const take = 20;
   for (let skip = 0; skip <= contractsLength; skip += take) {
