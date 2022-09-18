@@ -30,6 +30,10 @@ export async function downloadSourceCode(
   );
 }
 
+export async function getContractDir(dir: string): Promise<string> {
+  return cmd(`find ${dir} -type d -d 1`);
+}
+
 export async function getSourceCode(
   explorer: Explorer,
   contractAddress: string,

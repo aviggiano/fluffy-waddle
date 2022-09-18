@@ -7,6 +7,5 @@ export const AppDataSource = new DataSource({
   type: "postgres",
   ...config.postgres,
   synchronize: false,
-  logging: true,
   entities: [__dirname + "/**/*.entity.{js,ts}"],
 });

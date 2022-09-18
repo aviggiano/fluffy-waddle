@@ -11,5 +11,9 @@ export default {
     username: process.env.POSTGRES_USERNAME!,
     password: process.env.POSTGRES_PASSWORD!,
     database: process.env.POSTGRES_DATABASE!,
+    logging: Boolean(process.env.POSTGRES_LOGGING ?? false),
+  },
+  reports: {
+    maxAgeDays: 1,
   },
 };

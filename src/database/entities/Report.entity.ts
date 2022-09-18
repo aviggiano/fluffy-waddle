@@ -29,6 +29,7 @@ export class Report {
   @Column()
   tool: Tool;
   @Column()
+  @Index()
   md5: string;
   @Column()
   details: string;
