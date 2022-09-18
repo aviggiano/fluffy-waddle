@@ -31,7 +31,7 @@ export async function downloadSourceCode(
 }
 
 export async function getContractDir(dir: string): Promise<string> {
-  return cmd(`find ${dir} -type d -d 1`);
+  return cmd(`find ${dir} -maxdepth 1 -type d`);
 }
 
 export async function getSourceCode(
