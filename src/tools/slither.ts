@@ -41,6 +41,6 @@ export default async function (contract: Contract): Promise<string> {
     etherscan: config.explorer.etherscanApiKey,
   };
   return cmd(
-    `slither ${networks[explorer]}:${address} ${apiKeyNames[explorer]} ${apiKeyValues[explorer]} 2>&1 || true`
+    `slither ${networks[explorer]}:${address} ${apiKeyNames[explorer]} ${apiKeyValues[explorer]} --exclude-informational --exclude-low --exclude-dependencies --exclude-optimization 2>&1 || true`
   );
 }
