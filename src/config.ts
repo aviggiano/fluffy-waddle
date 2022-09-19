@@ -13,9 +13,6 @@ export default {
     database: process.env.POSTGRES_DATABASE!,
     logging: Boolean(process.env.POSTGRES_LOGGING ?? false),
   },
-  reports: {
-    maxAgeDays: 7,
-  },
   explorer: {
     bscscanApiKey: process.env.BSCSCAN_API_KEY!,
     etherscanApiKey: process.env.ETHERSCAN_API_KEY!,

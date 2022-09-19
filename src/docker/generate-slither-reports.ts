@@ -1,10 +1,7 @@
 import database, { connect, Contract, Report } from "../database";
 import { Logger } from "tslog";
 import slither from "../tools/slither";
-import config from "../config";
 import { Tool } from "../tools";
-import { MoreThan } from "typeorm";
-import subDays from "date-fns/subDays";
 
 const tool: Tool = "slither";
 
@@ -24,12 +21,11 @@ export default async function (): Promise<void> {
         const reportExists = await database.manager.findOne(Report, {
           where: {
             contract,
-            createdAt: MoreThan(subDays(new Date(), config.reports.maxAgeDays)),
           },
         });
         if (reportExists) {
           log.debug(
-            `report for contract ${contract.blockchain.caip}:${contract.address} is not old enough`
+            `report for contract ${contract.blockchain.caip}:${contract.address} already exists`
           );
           return;
         }
