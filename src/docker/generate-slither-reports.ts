@@ -21,6 +21,7 @@ export default async function (): Promise<void> {
         const reportExists = await database.manager.findOne(Report, {
           where: {
             contract,
+            tool,
           },
         });
         if (reportExists) {
