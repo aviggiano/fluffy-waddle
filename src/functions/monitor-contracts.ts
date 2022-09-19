@@ -1,13 +1,13 @@
 import {
   ExplorerContractVerified,
   listContractsVerified,
-} from "../../tools/explorer";
+} from "../tools/explorer";
 import database, {
   Blockchain,
   connect,
   Contract,
   disconnect,
-} from "../../database";
+} from "../database";
 import parseDate from "date-fns/parse";
 import { Logger } from "tslog";
 
@@ -78,3 +78,15 @@ export async function main() {
   log.info("monitor-contracts end");
   await disconnect();
 }
+
+export default {
+  handler: "src/functions/monitor-contracts.main",
+  maximumRetryAttempts: 0,
+  events: [
+    {
+      schedule: {
+        rate: ["rate(1 minute)"],
+      },
+    },
+  ],
+};

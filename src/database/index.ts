@@ -3,6 +3,7 @@ import { AppDataSource } from "./data-source";
 import { Report } from "./entities/Report.entity";
 import { Contract } from "./entities/Contract.entity";
 import { Blockchain } from "./entities/Blockchain.entity";
+import { Statistic } from "./entities/Statistic.entity";
 import { Logger } from "tslog";
 
 const log = new Logger();
@@ -21,6 +22,6 @@ export async function disconnect(): Promise<void> {
   }
 }
 
-export { Report, Contract, Blockchain };
+export { Report, Contract, Blockchain, Statistic };
 
 export default AppDataSource;

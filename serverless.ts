@@ -2,6 +2,7 @@ import type { AWS } from "@serverless/typescript";
 
 import hello from "@functions/hello";
 import monitorContracts from "@functions/monitor-contracts";
+import generateStatistics from "@functions/generate-statistics";
 
 const serverlessConfiguration: AWS = {
   service: "fluffy-waddle",
@@ -20,7 +21,7 @@ const serverlessConfiguration: AWS = {
     },
     lambdaHashingVersion: "20201221",
   },
-  functions: { hello, monitorContracts },
+  functions: { hello, monitorContracts, generateStatistics },
   package: { individually: true },
   custom: {
     esbuild: {
