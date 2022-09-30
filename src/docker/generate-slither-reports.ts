@@ -20,7 +20,7 @@ export default async function (): Promise<void> {
       contracts.map(async (contract) => {
         const reportExists = await database.manager.findOne(Report, {
           where: {
-            contract,
+            contractId: contract.id,
             tool,
           },
         });
