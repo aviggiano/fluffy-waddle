@@ -40,7 +40,8 @@ export default async function (contract: Contract): Promise<string> {
     polygonscan: config.explorer.polygonscanApiKey,
     etherscan: config.explorer.etherscanApiKey,
   };
+  const output = `/tmp/${contract.blockchain.id}:${contract.address}`;
   return cmd(
-    `slither ${networks[explorer]}:${address} ${apiKeyNames[explorer]} ${apiKeyValues[explorer]} --exclude-informational --exclude-low --exclude-dependencies --exclude-optimization 2>&1 || true`
+    `slither ${networks[explorer]}:${address} ${apiKeyNames[explorer]} ${apiKeyValues[explorer]} --json ${output} 2>/dev/null || true && cat ${output} | jq -c && rm ${output}`
   );
 }
