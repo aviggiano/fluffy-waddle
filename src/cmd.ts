@@ -6,7 +6,7 @@ const log = new Logger();
 export default async function (cmd: string): Promise<string> {
   return new Promise((resolve, reject) => {
     log.info(cmd);
-    exec(cmd, (error, stdout, stderr) => {
+    exec(cmd, { maxBuffer: 1024 * 1024 * 2 }, (error, stdout, stderr) => {
       log.debug(error, stdout, stderr);
       if (error) {
         reject(error);

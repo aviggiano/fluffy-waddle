@@ -106,3 +106,4 @@ dist
 TODO.md
 .esbuild
 .build
+crytic-export/

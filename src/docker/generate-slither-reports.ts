@@ -34,12 +34,20 @@ export default async function (): Promise<void> {
         log.debug(
           `run slither on ${contract.blockchain.caip}:${contract.address}`
         );
-        const details = await slither(contract);
-        await database.manager.save(Report, {
-          contractId: contract.id,
-          details,
-          tool,
-        });
+        try {
+          const details = await slither(contract);
+          await database.manager.save(Report, {
+            contractId: contract.id,
+            details,
+            tool,
+          });
+        } catch (err) {
+          log.error(
+            `Error '${JSON.stringify(err)}' for contract ${
+              contract.blockchain.caip
+            }:${contract.address}`
+          );
+        }
       })
     );
   }
