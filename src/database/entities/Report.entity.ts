@@ -30,8 +30,6 @@ export class Report {
   tool: Tool;
   @Column()
   details: string;
-  @Column({ nullable: true })
-  notes?: string;
 
   @CreateDateColumn()
   createdAt: Date;
