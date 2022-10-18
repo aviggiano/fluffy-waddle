@@ -12,4 +12,8 @@ if [ "$BEHIND" != "" ]; then
 	git pull
 	docker build . -t fluffy
 	docker run -d fluffy -c "yarn docker"
+
+	# cleanup
+	cp crontab.sh > /root/crontab.sh
+	sudo docker system prune -a -f
 fi
