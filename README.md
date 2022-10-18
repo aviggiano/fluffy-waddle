@@ -9,3 +9,6 @@ Zero-config smart contract vulnerability detection system
 
 fluffy-waddle crawls etherscan and other blockchain explorers and checks for potential vulnerabilities in smart contracts.
 
+## Roadmap
+
+https://trello.com/b/ukr4EXw9/fluffy-waddle
