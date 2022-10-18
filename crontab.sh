@@ -8,12 +8,13 @@ cd fluffy-waddle
 git remote update
 BEHIND=$(git status | grep behind)
 if [ "$BEHIND" != "" ]; then
-	docker ps | grep -v CONTAINER | awk '{print $1}' | xargs -I{} docker kill {}
 	git pull
+	# cleanup
+	sudo docker system prune -a -f
+
+	# run new version
+	docker ps | grep -v CONTAINER | awk '{print $1}' | xargs -I{} docker kill {}
 	docker build . -t fluffy
 	docker run -d fluffy -c "yarn docker"
-
-	# cleanup
 	cp crontab.sh > /root/crontab.sh
-	sudo docker system prune -a -f
 fi
