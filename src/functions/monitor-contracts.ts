@@ -7,7 +7,7 @@ import database, {
   connect,
   Contract,
   disconnect,
-} from "../database";
+} from "fluffy-waddle-database";
 import parseDate from "date-fns/parse";
 import { Logger } from "tslog";
 
@@ -42,7 +42,7 @@ export async function main() {
   const blockchains = await database.manager.find(Blockchain);
 
   await Promise.all(
-    blockchains.map(async (blockchain) => {
+    blockchains.map(async (blockchain: Blockchain) => {
       const explorer = blockchain.explorer;
       const pages = 20;
       for (let page = 1; page <= pages; page++) {

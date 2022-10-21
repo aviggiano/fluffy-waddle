@@ -1,7 +1,11 @@
-import database, { connect, Contract, Report } from "../database";
+import database, {
+  connect,
+  Contract,
+  Report,
+  Tool,
+} from "fluffy-waddle-database";
 import { Logger } from "tslog";
 import slither from "../tools/slither";
-import { Tool } from "../tools";
 
 const tool: Tool = "slither";
 

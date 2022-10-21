@@ -5,7 +5,7 @@ import database, {
   disconnect,
   Report,
   Statistic,
-} from "../database";
+} from "fluffy-waddle-database";
 import { Logger } from "tslog";
 
 const log = new Logger();

@@ -5,8 +5,8 @@
   "repository": "git@github.com:aviggiano/fluffy-waddle.git",
   "license": "MIT",
   "scripts": {
-    "local": "serverless invoke local",
-    "logs": "serverless logs --tail",
+    "local": "serverless invoke local --function",
+    "logs": "serverless logs --tail --function",
     "docker": "ts-node src/docker/index.ts",
     "get-secrets": "aws secretsmanager get-secret-value --region us-east-1 --secret-id .env | jq --raw-output '.SecretString' > .env",
     "put-secrets": "aws secretsmanager put-secret-value --region us-east-1 --secret-id .env --secret-string file://.env"
@@ -20,6 +20,7 @@
     "date-fns": "^2.29.2",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "fluffy-waddle-database": "^0.1.5",
     "minimist": "^1.2.6",
     "node-html-parser": "^5.4.2",
     "pg": "^8.8.0",

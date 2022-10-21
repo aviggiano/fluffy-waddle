@@ -5,7 +5,7 @@ import { Logger } from "tslog";
 
 const log = new Logger();
 
-export type Explorer = "etherscan" | "bscscan" | "polygonscan";
+import { Explorer } from "fluffy-waddle-database";
 
 export interface ExplorerContractVerified {
   Address: string;

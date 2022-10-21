@@ -16,5 +16,5 @@ if [ "$BEHIND" != "" ]; then
 	docker ps | grep -v CONTAINER | awk '{print $1}' | xargs -I{} docker kill {}
 	docker build . -t fluffy
 	docker run -d fluffy -c "yarn docker"
-	cp crontab.sh > /root/crontab.sh
+	sudo cp crontab.sh > /root/crontab.sh
 fi
