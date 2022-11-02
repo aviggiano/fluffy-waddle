@@ -7,6 +7,7 @@
   "scripts": {
     "local": "serverless invoke local --function",
     "logs": "serverless logs --tail --function",
+    "build": "tsc",
     "docker": "ts-node src/docker/index.ts",
     "get-secrets": "aws secretsmanager get-secret-value --region us-east-1 --secret-id .env | jq --raw-output '.SecretString' > .env",
     "put-secrets": "aws secretsmanager put-secret-value --region us-east-1 --secret-id .env --secret-string file://.env"

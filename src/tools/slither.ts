@@ -1,6 +1,5 @@
-import { Contract } from "../database";
 import cmd from "../cmd";
-import { Explorer } from "./explorer";
+import { Explorer, Contract } from "fluffy-waddle-database";
 import config from "../config";
 
 type SlitherNetwork =
