@@ -3,6 +3,8 @@ import fs from "fs/promises";
 import mkdirp from "mkdirp";
 import cmd from "../cmd";
 import { Logger } from "tslog";
+import { format } from "date-fns";
+import { In } from "typeorm";
 
 const log = new Logger();
 
@@ -23,23 +25,27 @@ function capitalize(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-export default async function (): Promise<void> {
+export default async function x(): Promise<void> {
   log.info("generate-ebook start");
   await connect();
   const audits = await database.manager.find(Audit);
 
+  const date = format(new Date(), "yyyy-MM-dd");
   const title = "The Auditor Book";
-  const filename = "the-auditor-book";
-  const dir = `/tmp/${filename}`;
+  const dir = `/tmp/the-auditor-book-${date}`;
   await mkdirp(dir);
 
   for (const audit of audits) {
-    await fs.writeFile(`${dir}/${audit.name}-${0}.md`, `# ${audit.name}`);
     const findings = await database.manager.find(Finding, {
       where: {
         auditId: audit.id,
-      },
+        severity: In(["high", "medium"]),
+      } as any,
     });
+
+    if (findings.length === 0) continue;
+
+    await fs.writeFile(`${dir}/${audit.name}-${0}.md`, `# ${audit.name}`);
     await Promise.all(
       findings.sort(sortBySeverity).map(async (finding, index) => {
         const content = [
@@ -58,8 +64,19 @@ export default async function (): Promise<void> {
   }
 
   await cmd(
-    `pandoc -o ${filename}.epub --metadata creator="fluffy-waddle" --metadata title="${title}" ${dir}/*.md --toc --from markdown-yaml_metadata_block`
+    `pandoc -o '${title}.epub' \\
+    --metadata creator="Compiled by aviggiano.eth"  \\
+    --metadata title="${title}" \\
+    --metadata date="${date}" \\
+    --metadata cover-image="cover.png" \\
+    --toc \\
+    --number-sections \\
+    --standalone \\
+    --from markdown-yaml_metadata_block \\
+    ${dir}/*.md`
   );
 
   log.info("generate-ebook end");
 }
+
+x();
