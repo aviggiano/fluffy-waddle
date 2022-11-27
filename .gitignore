@@ -107,3 +107,4 @@ TODO.md
 .esbuild
 .build
 crytic-export/
+*.epub
