@@ -25,6 +25,7 @@ export async function main() {
   const octokit = new Octokit({});
 
   const per_page = 100;
+  const API_LIMITS = 10;
   const org = "code-423n4";
 
   for (let repoPage = 1; ; repoPage++) {
@@ -54,6 +55,7 @@ export async function main() {
 
     log.debug(`${newAuditNames.length} new audits for ${org}`);
 
+    let count = 0;
     for (const repo of newAuditNames) {
       const audit = await database.manager.save(Audit, {
         auditorId: auditor!.id,
@@ -79,10 +81,7 @@ export async function main() {
           .map((issue) => ({
             id: issue.id,
             title: issue.title,
-            body: (issue.body || "")
-              .split("\n")
-              .map((line) => line.replace(/^#/g, "##"))
-              .join("\n"),
+            body: issue.body || "",
             url: issue.url,
             state: issue.state,
             labels: issue.labels.map((label) =>
@@ -120,6 +119,9 @@ export async function main() {
       }
     }
 
+    count++;
+    if (count > API_LIMITS) break;
+
     if (repos.data.length < per_page) break;
   }
 
@@ -132,7 +134,7 @@ export default {
   events: [
     {
       schedule: {
-        rate: ["rate(1 day)"],
+        rate: ["rate(6 hours)"],
       },
     },
   ],
