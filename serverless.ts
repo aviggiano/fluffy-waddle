@@ -3,7 +3,6 @@ import type { AWS } from "@serverless/typescript";
 import hello from "@functions/hello";
 import monitorContracts from "@functions/monitor-contracts";
 import generateStatistics from "@functions/generate-statistics";
-import getFindingsCode4rena from "@functions/get-findings-code4rena";
 
 const serverlessConfiguration: AWS = {
   service: "fluffy-waddle",
@@ -27,7 +26,6 @@ const serverlessConfiguration: AWS = {
     hello,
     monitorContracts,
     generateStatistics,
-    getFindingsCode4rena,
   },
   package: { individually: true },
   custom: {
